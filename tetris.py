@@ -3,7 +3,7 @@ from random import choice
 
 print("Script dimulai...")
 
-# Shapes and their rotations
+# Shapes and rotations
 shapes = [
     [[1, 1, 1], [0, 1, 0]],  # T shape
     [[1, 1], [1, 1]],        # Square shape
@@ -20,7 +20,7 @@ def init_screen():
     sh, sw = screen.getmaxyx()
     win = curses.newwin(sh, sw, 0, 0)
     win.keypad(1)
-    win.timeout(300)  # Kecepatan jatuh balok (milidetik)
+    win.timeout(300)  
     return win
 
 # Check if a move is valid
@@ -66,9 +66,9 @@ def draw_grid(win, grid, current_shape, shape_pos):
                 try:
                     win.addch(shape_pos[0] + i, (shape_pos[1] + j) * 2, "#")
                 except curses.error:
-                    pass  # Abaikan jika terjadi kesalahan
+                    pass  # Abaikan 
 
-# Rotate shape clockwise
+# Rotate 
 def rotate_shape(shape):
     rows, cols = len(shape), len(shape[0])
     new_shape = [[0] * rows for _ in range(cols)]
@@ -77,11 +77,11 @@ def rotate_shape(shape):
             new_shape[j][rows - 1 - i] = shape[i][j]
     return new_shape
 
-# Main Tetris game
+# Main
 def tetris():
     win = init_screen()
     sh, sw = win.getmaxyx()
-    grid_width = min(sw // 2, 10)  # Grid maksimum 10 kolom
+    grid_width = min(sw // 2, 10) 
     grid_height = sh - 1
     grid = [[0 for _ in range(grid_width)] for _ in range(grid_height)]
 
@@ -106,19 +106,19 @@ def tetris():
         key = next_key if next_key != -1 else None
         new_pos = list(shape_pos)
 
-        if key == curses.KEY_DOWN:  # Turunkan balok lebih cepat
+        if key == curses.KEY_DOWN:  # Turunkan balok 
             new_pos[0] += 1
         elif key == curses.KEY_LEFT:
             new_pos[1] -= 1
         elif key == curses.KEY_RIGHT:
             new_pos[1] += 1
-        elif key == curses.KEY_UP:  # Putar balok searah jarum jam
+        elif key == curses.KEY_UP:  # Putar balok
             rotated_shape = rotate_shape(current_shape)
             if valid_move(grid, rotated_shape, shape_pos):
                 current_shape = rotated_shape
 
-        # Pergerakan otomatis (jatuh ke bawah)
-        if key is None:  # Tidak ada input, balok jatuh
+        # Pergerakan otomatis
+        if key is None:  
             new_pos[0] += 1
 
         # Validasi pergerakan
@@ -127,9 +127,9 @@ def tetris():
         else:
             if key is None or key == curses.KEY_DOWN:
                 add_to_grid(grid, current_shape, shape_pos)
-                score += 10  # Tambahkan 10 poin setiap balok ditempatkan
+                score += 10  
                 grid, cleared = clear_lines(grid)
-                score += cleared * 10  # Tambahkan 10 poin per garis yang dibersihkan
+                score += cleared * 10 
                 current_shape = choice(shapes)
                 shape_pos = [0, max(0, grid_width // 2 - len(current_shape[0]) // 2)]
                 if not valid_move(grid, current_shape, shape_pos):
