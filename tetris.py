@@ -1,7 +1,8 @@
+print("Script dimulai...")
+
 import curses
 from random import choice
 
-print("Script dimulai...")
 
 # Shapes and rotations
 shapes = [
